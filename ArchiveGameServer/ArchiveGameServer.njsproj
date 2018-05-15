@@ -41,9 +41,6 @@
     <Compile Include="models\game.js">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="models\JavaScript1.js">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="models\player.js">
       <SubType>Code</SubType>
     </Compile>
