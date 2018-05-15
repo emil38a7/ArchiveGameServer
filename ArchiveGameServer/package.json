@@ -1,0 +1,9 @@
+{
+  "name": "archive-game-server",
+  "version": "0.0.0",
+  "description": "ArchiveGameServer",
+  "main": "app.js",
+  "author": {
+    "name": "emilk"
+  }
+}
