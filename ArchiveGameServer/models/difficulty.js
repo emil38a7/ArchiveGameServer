@@ -6,4 +6,4 @@ var DifficultySchema = new Schema({
     difficultyLevel: String,
 })
 
-module.exports = mongoose.model('Answear', AnswearSchema);
+module.exports = mongoose.model('Difficulty', DifficultySchema);

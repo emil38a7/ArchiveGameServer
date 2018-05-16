@@ -29,10 +29,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app.js" />
-    <Compile Include="models\answear.js">
+    <Compile Include="models\answer.js">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="models\answearRelation.js">
+    <Compile Include="models\answerRelation.js">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="models\difficulty.js">
