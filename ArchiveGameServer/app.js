@@ -32,9 +32,6 @@ var QusetionRelation = require('./models/questionRelation');
 var Role = require('./models/role');
 var User = require('./models/user');
 
-
-
-
 //ROUTING
 
 var router = express.Router();
@@ -50,7 +47,7 @@ router.use(function (req, res, next) {
 
 router.route('/question')
     .get(function (req, res) {
-        Question.find({}, { _id: 0, __v: 0 }, function (err, quesions) {
+        Question.find({}, { _id: 0, __v: 0 }, function (err, questions) {
             if (err)
                 res.send(err);
             res.status(200).json(questions);
@@ -65,6 +62,25 @@ router.route('/question')
             res.status(201).json(question);
         });
     });
+
+router.route('/answer')
+    .get(function (req, res) {
+        Answer.find({}, { _id: 0, __v: 0 }, function (err, answer) {
+            if (err)
+                res.send(err);
+            res.status(200).json(answers);
+        });
+    })
+    .post(function (req, res) {
+        var answer = new Answer(req.body);
+        console.log('the object:  ' + JSON.stringify(answer));
+        answer.save(function (err) {
+            if (err)
+                res.send(err);
+            res.status(201).json(question);
+        });
+    });
+
 
 
 app.listen(3000, () => {
