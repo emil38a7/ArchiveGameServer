@@ -63,23 +63,16 @@ router.route('/question')
         });
     });
 
-router.route('/answer')
-    .get(function (req, res) {
-        Answer.find({}, { _id: 0, __v: 0 }, function (err, answer) {
+router.route('/question/:questionID')
+    .delete(function (req, res) {
+        Question.deleteOne({ "questionID": req.params.questionID }, function (err, bike) {
             if (err)
                 res.send(err);
-            res.status(200).json(answers);
-        });
-    })
-    .post(function (req, res) {
-        var answer = new Answer(req.body);
-        console.log('the object:  ' + JSON.stringify(answer));
-        answer.save(function (err) {
-            if (err)
-                res.send(err);
-            res.status(201).json(question);
+            res.status(200).json(bike);
         });
     });
+
+
 
 
 

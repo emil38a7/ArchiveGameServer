@@ -1,0 +1,2 @@
+C:\Users\emilk\source\repos\ArchiveGameServer\ArchiveGameServer\obj\Debug\ArchiveGameServer.njsproj.CoreCompileInputs.cache
+C:\Users\emilk\source\repos\ArchiveGameServer\ArchiveGameServer\bin\Microsoft.NodejsTools.WebRole.dll
