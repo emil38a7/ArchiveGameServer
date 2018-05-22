@@ -45,6 +45,40 @@ router.use(function (req, res, next) {
     next();
 });
 
+router.route('/user/login')
+    .post(function (req, res) { //add code here
+        User.findOne({ userEmail: req.body.userEmail, userPassword: req.body.userPassword }, { _id: 0 }, function (err, user) {
+            if (err) {
+                res.send(err);
+            }
+            else if (user == null) {
+                res.status(203).json(user);
+            }
+            else
+                res.status(202).json(user);
+        });
+    });
+
+router.route('/user')
+    .get(function (req, res) {
+        User.find({}, { _id: 0, __v: 0 }, function (err, users) {
+            if (err)
+                res.send(err);
+            res.status(200).json(users);
+        });
+    })
+    .post(function (req, res) {
+        var user = new User(req.body);
+        console.log('the object:  ' + JSON.stringify(user));
+        user.save(function (err) {
+            if (err)
+                res.send(err);
+            res.status(201).json(user);
+        });
+    });
+
+
+
 router.route('/question')
     .get(function (req, res) {
         Question.find({}, { _id: 0, __v: 0 }, function (err, questions) {
