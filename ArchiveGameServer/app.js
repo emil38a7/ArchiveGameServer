@@ -77,8 +77,6 @@ router.route('/user')
         });
     });
 
-
-
 router.route('/question')
     .get(function (req, res) {
         Question.find({}, { _id: 0, __v: 0 }, function (err, questions) {
@@ -97,6 +95,18 @@ router.route('/question')
         });
     });
 
+router.route('/questionFiltered')
+    .get(function (req, res) {
+        Question.find({ "questionDifficulty": req.query.questionDifficulty }, { _id: 0, __v: 0 }, function (err, questions) {
+            if (err)
+                res.send(err);
+            res.status(200).json(questions);
+        });
+    })
+
+
+   
+
 router.route('/question/:questionID')
     .delete(function (req, res) {
         Question.deleteOne({ "questionID": req.params.questionID }, function (err, bike) {
@@ -106,9 +116,74 @@ router.route('/question/:questionID')
         });
     });
 
+    router.route('/player')
+        .get(function (req, res) {
+            Player.find({}, { _id: 0, __v: 0 }, function (err, users) {
+                if (err)
+                    res.send(err);
+                res.status(200).json(users);
+            });
+        })
+        .post(function (req, res) {
+            var player = new Player(req.body);
+            console.log('the object:  ' + JSON.stringify(player));
+            player.save(function (err) {
+                if (err)
+                    res.send(err);
+                res.status(201).json(player);
+            });
+    });
+
+////////////////////////////TCP SERVER////////////////////////////
+
+// Load the TCP Library
+net = require('net');
+
+// Keep track of the chat clients
+var clients = [];
+
+// Start a TCP Server
+net.createServer(function (socket) {
+
+    // Identify this client
+    socket.name = socket.remoteAddress + ":" + socket.remotePort
+
+    // Put this new client in the list
+    clients.push(socket);
+
+    // Send a nice welcome message and announce
+    socket.write("Welcome " + socket.name + "\n");
+    broadcast(socket.name + " joined the chat\n", socket);
+
+    // Handle incoming messages from clients.
+    socket.on('data', function (data) {
+        broadcast(socket.name + "> " + data, socket);
+    });
+
+    // Remove the client from the list when it leaves
+    socket.on('end', function () {
+        clients.splice(clients.indexOf(socket), 1);
+        broadcast(socket.name + " left the chat.\n");
+    });
+
+    // Send a message to all clients
+    function broadcast(message, sender) {
+        clients.forEach(function (client) {
+            // Don't want to send it to sender
+            if (client === sender) return;
+            client.write(message);
+        });
+        // Log it to the server output too
+        process.stdout.write(message)
+    }
+
+}).listen(5000);
+
+// Put a friendly message on the terminal of the server.
+console.log("TCP server running at port 5000\n");
 
 
-
+////////////////////////////TCP SERVER/////////////////////////////
 
 app.listen(3000, () => {
     console.log('App listening on port 3000');
