@@ -28,7 +28,7 @@ var Game = require('./models/game');
 var Player = require('./models/player');
 var PlayerRelation = require('./models/playerRelation');
 var Question = require('./models/question');
-var QusetionRelation = require('./models/questionRelation');
+var QuestionRelation = require('./models/questionRelation');
 var Role = require('./models/role');
 var User = require('./models/user');
 
@@ -104,9 +104,6 @@ router.route('/questionFiltered')
         });
     })
 
-
-   
-
 router.route('/question/:questionID')
     .delete(function (req, res) {
         Question.deleteOne({ "questionID": req.params.questionID }, function (err, bike) {
@@ -132,6 +129,60 @@ router.route('/question/:questionID')
                     res.send(err);
                 res.status(201).json(player);
             });
+    });
+
+router.route('/questionRelation')
+    .get(function (req, res) {
+        QuestionRelation.find({}, { _id: 0, __v: 0 }, function (err, questionRelations) {
+            if (err)
+                res.send(err);
+            res.status(200).json(questionRelations);
+        });
+    })
+    .post(function (req, res) {
+        var questionRelation = new QuestionRelation(req.body);
+        console.log('the object:  ' + JSON.stringify(questionRelation));
+        questionRelation.save(function (err) {
+            if (err)
+                res.send(err);
+            res.status(201).json(questionRelation);
+        });
+    });
+
+router.route('/playerRelation')
+    .get(function (req, res) {
+        PlayerRelation.find({}, { _id: 0, __v: 0 }, function (err, playerRelations) {
+            if (err)
+                res.send(err);
+            res.status(200).json(playerRelations);
+        });
+    })
+    .post(function (req, res) {
+        var playerRelation = new PlayerRelation(req.body);
+        console.log('the object:  ' + JSON.stringify(playerRelation));
+        playerRelation.save(function (err) {
+            if (err)
+                res.send(err);
+            res.status(201).json(playerRelation);
+        });
+    });
+
+router.route('/game')
+    .get(function (req, res) {
+        Game.find({}, { _id: 0, __v: 0 }, function (err, games) {
+            if (err)
+                res.send(err);
+            res.status(200).json(games);
+        });
+    })
+    .post(function (req, res) {
+        var game = new Game(req.body);
+        console.log('the object:  ' + JSON.stringify(game));
+        game.save(function (err) {
+            if (err)
+                res.send(err);
+            res.status(201).json(game);
+        });
     });
 
 ////////////////////////////TCP SERVER////////////////////////////
