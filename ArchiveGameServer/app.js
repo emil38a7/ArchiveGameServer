@@ -1,14 +1,11 @@
 var express = require('express');
 var app = express();
 
-
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 
 app.use(express.static('public'));
 app.use(bodyParser.json());
-
-
 //Make connection
 
 //.connect('mongodb://localhost:27017/BikeShop');
@@ -31,6 +28,7 @@ var Question = require('./models/question');
 var QuestionRelation = require('./models/questionRelation');
 var Role = require('./models/role');
 var User = require('./models/user');
+var CurentQuestion = require('./models/currentQuestion');
 
 //ROUTING
 
@@ -40,8 +38,9 @@ app.use('/', router);
 
 router.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.header("Access-Control-Allow-Headers", "Authorization, content-type, Access-Control-Allow-Origin");
-    console.log("Its ok mongo");
+    //console.log("Its ok mongo");
     next();
 });
 
@@ -113,22 +112,22 @@ router.route('/question/:questionID')
         });
     });
 
-    router.route('/player')
-        .get(function (req, res) {
-            Player.find({}, { _id: 0, __v: 0 }, function (err, users) {
-                if (err)
-                    res.send(err);
-                res.status(200).json(users);
-            });
-        })
-        .post(function (req, res) {
-            var player = new Player(req.body);
-            console.log('the object:  ' + JSON.stringify(player));
-            player.save(function (err) {
-                if (err)
-                    res.send(err);
-                res.status(201).json(player);
-            });
+router.route('/player')
+    .get(function (req, res) {
+        Player.find({}, { _id: 0, __v: 0 }, function (err, users) {
+            if (err)
+                res.send(err);
+            res.status(200).json(users);
+        });
+    })
+    .post(function (req, res) {
+        var player = new Player(req.body);
+        console.log('the object:  ' + JSON.stringify(player));
+        player.save(function (err) {
+            if (err)
+                res.send(err);
+            res.status(201).json(player);
+        });
     });
 
 router.route('/questionRelation')
@@ -185,57 +184,36 @@ router.route('/game')
         });
     });
 
-////////////////////////////TCP SERVER////////////////////////////
-
-// Load the TCP Library
-net = require('net');
-
-// Keep track of the chat clients
-var clients = [];
-
-// Start a TCP Server
-net.createServer(function (socket) {
-
-    // Identify this client
-    socket.name = socket.remoteAddress + ":" + socket.remotePort
-
-    // Put this new client in the list
-    clients.push(socket);
-
-    // Send a nice welcome message and announce
-    socket.write("Welcome " + socket.name + "\n");
-    broadcast(socket.name + " joined the chat\n", socket);
-
-    // Handle incoming messages from clients.
-    socket.on('data', function (data) {
-        broadcast(socket.name + "> " + data, socket);
-    });
-
-    // Remove the client from the list when it leaves
-    socket.on('end', function () {
-        clients.splice(clients.indexOf(socket), 1);
-        broadcast(socket.name + " left the chat.\n");
-    });
-
-    // Send a message to all clients
-    function broadcast(message, sender) {
-        clients.forEach(function (client) {
-            // Don't want to send it to sender
-            if (client === sender) return;
-            client.write(message);
+router.route('/currentQuestion')
+    .get(function (req, res) {
+        CurentQuestion.find({}, { _id: 0, __v: 0 }, function (err, currentQuestions) {
+            if (err)
+                res.send(err);
+            res.status(200).json(currentQuestions);
         });
-        // Log it to the server output too
-        process.stdout.write(message)
-    }
+    })
+    .post(function (req, res) {
+        var currentQuestion = new CurentQuestion(req.body);
+        console.log('the object:  ' + JSON.stringify(currentQuestion));
+        currentQuestion.save(function (err) {
+            if (err)
+                res.send(err);
+            res.status(201).json(currentQuestion);
+        });
+    })
+    .put(function (req, res) {
+        var currentQuestion = new CurentQuestion(req.body);
+        console.log('the object:  ' + JSON.stringify(currentQuestion));
 
-}).listen(5000);
-
-// Put a friendly message on the terminal of the server.
-console.log("TCP server running at port 5000\n");
-
-
-////////////////////////////TCP SERVER/////////////////////////////
+        CurentQuestion.replaceOne({ "questionID": req.query.questionID }, { "questionID": currentQuestion.questionID, "questionText": currentQuestion.questionText, "questionAnswers": currentQuestion.questionAnswers, "questionDifficulty": currentQuestion.questionDifficulty }, function (err, currentQuestion) {
+            if (err)
+                res.send(err);
+            res.status(200).json(currentQuestion);
+        });
+    });
 
 app.listen(3000, () => {
     console.log('App listening on port 3000');
 });
+
+//questionID: String,questionText: String,questionAnswers: [{answerID: String,answerText: String,questionID: String, correctAnswer: String questionDifficulty: String

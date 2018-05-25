@@ -35,6 +35,9 @@
     <Compile Include="models\answerRelation.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="models\currentQuestion.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="models\difficulty.js">
       <SubType>Code</SubType>
     </Compile>
