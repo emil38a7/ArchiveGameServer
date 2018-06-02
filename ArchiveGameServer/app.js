@@ -182,7 +182,31 @@ router.route('/game')
                 res.send(err);
             res.status(201).json(game);
         });
+    })
+    .delete(function (req, res) {
+        Game.deleteMany({}, function (err, obj) {
+            if (err) res.send(err);
+            res.status(201).json(obj);
+        })
     });
+
+router.route('/answerRelation')
+    .get(function (req, res) {
+        AnswerRelation.find({}, { _id: 0, __v: 0 }, function (err, answerRelations) {
+            if (err)
+                res.send(err);
+            res.status(200).json(answerRelations);
+        });
+    })
+    .post(function (req, res) {
+        var answerRelation = new AnswerRelation(req.body);
+        console.log('the object:  ' + JSON.stringify(answerRelation));
+        answerRelation.save(function (err) {
+            if (err)
+                res.send(err);
+            res.status(201).json(answerRelation);
+        });
+    })
 
 router.route('/currentQuestion')
     .get(function (req, res) {
