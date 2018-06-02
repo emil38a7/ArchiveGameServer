@@ -128,6 +128,12 @@ router.route('/player')
                 res.send(err);
             res.status(201).json(player);
         });
+    })
+    .delete(function (req, res) {
+        Player.remove({}, function (err, obj) {
+            if (err) res.send(err);
+            res.status(201).json(obj);
+        })
     });
 
 router.route('/questionRelation')
@@ -146,6 +152,12 @@ router.route('/questionRelation')
                 res.send(err);
             res.status(201).json(questionRelation);
         });
+    })
+    .delete(function (req, res) {
+        QuestionRelation.remove({}, function (err, obj) {
+            if (err) res.send(err);
+            res.status(201).json(obj);
+        })
     });
 
 router.route('/playerRelation')
@@ -164,6 +176,18 @@ router.route('/playerRelation')
                 res.send(err);
             res.status(201).json(playerRelation);
         });
+    })
+    .delete(function (req, res) {
+        PlayerRelation.remove({}, function (err, obj) {
+            if (err) res.send(err);
+            res.status(201).json(obj);
+        })
+    })
+    .delete(function (req, res) {
+        PlayerRelation.remove({}, function (err, obj) {
+            if (err) res.send(err);
+            res.status(201).json(obj);
+        })
     });
 
 router.route('/game')
@@ -184,7 +208,7 @@ router.route('/game')
         });
     })
     .delete(function (req, res) {
-        Game.deleteMany({}, function (err, obj) {
+        Game.remove({},function (err, obj) {
             if (err) res.send(err);
             res.status(201).json(obj);
         })
@@ -207,6 +231,12 @@ router.route('/answerRelation')
             res.status(201).json(answerRelation);
         });
     })
+    .delete(function (req, res) {
+        AnswerRelation.remove({}, function (err, obj) {
+            if (err) res.send(err);
+            res.status(201).json(obj);
+        })
+    });
 
 router.route('/currentQuestion')
     .get(function (req, res) {
@@ -234,6 +264,12 @@ router.route('/currentQuestion')
                 res.send(err);
             res.status(200).json(currentQuestion);
         });
+    })
+    .delete(function (req, res) {
+        CurentQuestion.remove({}, function (err, obj) {
+            if (err) res.send(err);
+            res.status(201).json(obj);
+        })
     });
 
 app.listen(3000, () => {
