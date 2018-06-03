@@ -259,7 +259,7 @@ router.route('/currentQuestion')
         var currentQuestion = new CurentQuestion(req.body);
         console.log('the object:  ' + JSON.stringify(currentQuestion));
 
-        CurentQuestion.replaceOne({ "questionID": req.query.questionID }, { "questionID": currentQuestion.questionID, "questionText": currentQuestion.questionText, "questionAnswers": currentQuestion.questionAnswers, "questionDifficulty": currentQuestion.questionDifficulty }, function (err, currentQuestion) {
+        CurentQuestion.replaceOne({ "questionID": req.query.questionID }, { "questionID": currentQuestion.questionID, "questionText": currentQuestion.questionText, "questionAnswers": currentQuestion.questionAnswers, "questionDifficulty": currentQuestion.questionDifficulty, "questionIndex": currentQuestion.questionIndex }, function (err, currentQuestion) {
             if (err)
                 res.send(err);
             res.status(200).json(currentQuestion);

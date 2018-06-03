@@ -10,7 +10,8 @@ var CurrentQuestionSchema = new Schema({
         questionID: String,
         correctAnswer: String
     }],
-    questionDifficulty: String
+    questionDifficulty: String,
+    questionIndex: String
 })
 
 module.exports = mongoose.model('CurrentQuestion', CurrentQuestionSchema);

@@ -9,7 +9,9 @@ var QuestionSchema = new Schema({
         answerText: String,
         questionID: String,
         correctAnswer: String}],
-    questionDifficulty: String
+    questionDifficulty: String,
+    questionIndex: String
+
 })
 
 module.exports = mongoose.model('Question', QuestionSchema);
