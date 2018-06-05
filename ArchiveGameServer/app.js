@@ -114,7 +114,7 @@ router.route('/question/:questionID')
 
 router.route('/player')
     .get(function (req, res) {
-        Player.find({}, { _id: 0, __v: 0 }, function (err, users) {
+        Player.find({}, { __v: 0 }, function (err, users) {
             if (err)
                 res.send(err);
             res.status(200).json(users);
@@ -134,6 +134,16 @@ router.route('/player')
             if (err) res.send(err);
             res.status(201).json(obj);
         })
+    })
+    .put(function (req, res) {
+        var updatePlayer = new Player(req.body);
+        console.log('the object:  ' + JSON.stringify(updatePlayer));
+
+        Player.replaceOne({ "playerID": req.query.playerID }, { "playerNickName": updatePlayer.playerNickName, "playerScore": updatePlayer.playerScore }, function (err, currentQuestion) {
+            if (err)
+                res.send(err);
+            res.status(200).json(currentQuestion);
+        });
     });
 
 router.route('/questionRelation')

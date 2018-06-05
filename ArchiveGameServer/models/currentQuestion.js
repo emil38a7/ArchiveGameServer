@@ -5,6 +5,7 @@ var CurrentQuestionSchema = new Schema({
     questionID: String,
     questionText: String,
     questionAnswers: [{
+        _id: String,
         answerID: String,
         answerText: String,
         questionID: String,
